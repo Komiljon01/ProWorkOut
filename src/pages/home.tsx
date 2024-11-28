@@ -1,28 +1,40 @@
-import { Button } from "@/components/ui/button";
+// Constants
 import { featuredItems, programs } from "@/constants";
-import men from "@/assets/men.png";
+
+// Components
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+
+// React icons
 import { FaArrowRightLong } from "react-icons/fa6";
+
+// rrd imports
+import { Link } from "react-router-dom";
+
+// import images
+import men from "@/assets/men.png";
 
 function Home() {
   return (
     <>
-      <div className="w-full h-screen flex items-center mt-16">
-        <div className="max-w-xl ml-60 flex h-full flex-col justify-center">
+      <div className="mt-16 flex h-screen w-full items-center">
+        <div className="ml-60 flex h-full max-w-xl flex-col justify-center">
           <h1 className="text-9xl font-semibold uppercase">Workout with me</h1>
           <p className="text-muted-foreground">
             A huge selection of health and fitness content, healthy recipes and
             transformation stories to help you get fit and stay fit!
           </p>
-          <Button className="w-fit mt-6 font-bold h-12" size={"lg"}>
-            Join club now
-          </Button>
+          <Link to="/auth">
+            <Button className="mt-6 h-12 w-fit font-bold" size={"lg"}>
+              Join club now
+            </Button>
+          </Link>
 
           <div className="mt-24">
             <p className="text-muted-foreground">AS FEATURED IN</p>
-            <div className="flex items-center gap-4 mt-2">
+            <div className="mt-2 flex items-center gap-4">
               {featuredItems.map((Icon, index) => (
-                <Icon key={index} className="w-12 h-12" />
+                <Icon key={index} className="h-12 w-12" />
               ))}
             </div>
           </div>
@@ -31,25 +43,25 @@ function Home() {
         <img src={men} alt="men" className="w-1/4" />
       </div>
 
-      <div className="container max-w-5xl mx-auto">
+      <div className="container mx-auto max-w-5xl">
         <h1 className="text-4xl">Not sure where to start?</h1>
         <p className="mt-2 text-muted-foreground">
           Programs offer day-to-day guidance on an interactive calendar to keep
           you on track.
         </p>
 
-        <div className="grid grid-cols-3 gap-4 my-8">
+        <div className="my-8 grid grid-cols-3 gap-4">
           {programs.map((item) => (
             <Card
               key={item.title}
-              className="p-8 relative cursor-pointer group"
+              className="group relative cursor-pointer p-8"
             >
               <h3>{item.title}</h3>
-              <p className="text-sm text-muted-foreground mt-2">{item.descr}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{item.descr}</p>
               <Button
                 size={"icon"}
                 variant={"link"}
-                className="absolute right-2 top-1/2 group-hover:translate-x-1 transition-transform"
+                className="absolute right-2 top-1/2 transition-transform group-hover:translate-x-1"
               >
                 <FaArrowRightLong />
               </Button>
