@@ -1,14 +1,21 @@
-import { navLinks } from "@/constants";
-import { Button } from "../ui/button";
-import { ModeToggle } from "./mode-toggle";
-
 // rrd imports
 import { Link } from "react-router-dom";
 
+// Store
+import { useUserState } from "@/stores/user.store";
+
+// Components
+import { navLinks } from "@/constants";
+import { Button } from "../ui/button";
+import { ModeToggle } from "./mode-toggle";
+import UserBox from "./user-box";
+
 function Navbar() {
+  const { user } = useUserState();
+
   return (
-    <div className="w-full h-[10vh] border-b fixed inset-0 z-50 bg-background">
-      <div className="container max-w-6xl mx-auto h-full flex justify-between items-center">
+    <div className="fixed inset-0 z-50 h-[10vh] w-full border-b bg-background">
+      <div className="container mx-auto flex h-full max-w-6xl items-center justify-between">
         <Link to="/">
           <h1 className="text-2xl font-bold uppercase">Workout</h1>
         </Link>
@@ -24,9 +31,13 @@ function Navbar() {
             </a>
           ))}
           <ModeToggle />
-          <Link to="/auth">
-            <Button variant={"secondary"}>Join Free</Button>
-          </Link>
+          {user ? (
+            <UserBox />
+          ) : (
+            <Link to="/auth">
+              <Button variant={"secondary"}>Join Free</Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
