@@ -4,9 +4,33 @@ import { useAuthState } from "@/stores/auth.store";
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
+import { loginSchema } from "@/lib/validation";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 
 function Login() {
   const { setAuth } = useAuthState();
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+  });
+
+  const onSubmit = async (values: z.infer<typeof loginSchema>) => {
+    const { email, password } = values;
+    console.log(email, password);
+  };
+
   return (
     <div className="flex flex-col">
       <h2 className="text-xl font-bold">Login</h2>
@@ -20,15 +44,45 @@ function Login() {
         </span>
       </p>
       <Separator className="my-5" />
-      <div>
-        <span>Email</span>
-        <Input placeholder="example@gmail.com" type="email" />
-      </div>
-      <div className="mt-2">
-        <span>Password</span>
-        <Input placeholder="*****" type="password" />
-      </div>
-      <Button className="mt-5 h-12 w-full">Login</Button>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="example@gmail.com"
+                    type="email"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input placeholder="*****" type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div>
+            <Button type="submit" className="mt-2 h-12 w-full">
+              Submit
+            </Button>
+          </div>
+        </form>
+      </Form>
     </div>
   );
 }
