@@ -26,11 +26,13 @@ import { AlertCircle } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import FillLoading from "../shared/fill-loading";
+import { useUserState } from "@/stores/user.store";
 
 function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useUserState();
 
   const { setAuth } = useAuthState();
 
@@ -45,7 +47,8 @@ function Login() {
     setLoading(true);
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      setUser(res.user);
       navigate("/");
     } catch (error) {
       const result = error as Error;

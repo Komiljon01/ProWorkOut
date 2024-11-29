@@ -8,6 +8,7 @@ import Dashboard from "./pages/dashboard";
 
 // rrd imports
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+
+      <Toaster position="top-center" />
     </>
   );
 }
