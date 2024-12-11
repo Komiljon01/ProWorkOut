@@ -1,6 +1,13 @@
-import { collection, getDocs, query } from "firebase/firestore";
-import { db } from "@/firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth, db } from "@/firebase";
 import { iTask, iTaskData } from "@/types";
+import {
+  endOfMonth,
+  endOfWeek,
+  isWithinInterval,
+  startOfMonth,
+  startOfWeek,
+} from "date-fns";
 
 export const taskService = {
   getTasks: async () => {
@@ -8,17 +15,40 @@ export const taskService = {
     let monthTotal = 0;
     let total = 0;
 
-    const q = query(collection(db, "tasks"));
+    const now = new Date();
+    const weekStart = startOfWeek(now);
+    const monthStart = startOfMonth(now);
+    const weekEnd = endOfWeek(now);
+    const monthEnd = endOfMonth(now);
+
+    const q = query(
+      collection(db, "tasks"),
+      where("userId", "==", auth.currentUser?.uid),
+    );
     const querySnapshot = await getDocs(q);
 
-    let taskData: iTaskData;
+    querySnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      const taskDate = new Date(data.startTime);
+      const taskTime = data.totalTime || 0;
+
+      if (isWithinInterval(taskDate, { start: weekStart, end: weekEnd })) {
+        weekTotal += taskTime;
+      }
+
+      if (isWithinInterval(taskDate, { start: monthStart, end: monthEnd })) {
+        monthTotal += taskTime;
+      }
+
+      total += taskTime;
+    });
 
     const tasks = querySnapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     })) as iTask[];
 
-    taskData = { tasks, weekTotal, monthTotal, total };
+    const taskData: iTaskData = { tasks, weekTotal, monthTotal, total };
 
     return taskData;
   },

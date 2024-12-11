@@ -11,8 +11,8 @@ function Auth() {
   const { authState } = useAuthState();
 
   return (
-    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-t from-foreground to-background">
-      <Card className="w-1/3 p-8 relative">
+    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-t from-foreground to-background sm:mt-0 mt-10">
+      <Card className="relative mx-5 w-full p-8 md:w-1/2 xl:w-1/3">
         {authState === "login" && <Login />}
         {authState === "register" && <Register />}
         <Social />

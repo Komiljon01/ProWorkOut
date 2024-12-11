@@ -76,7 +76,10 @@ function UserBox() {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <DropdownMenuItem className="flex cursor-pointer items-center gap-2">
+          <DropdownMenuItem
+            className="flex cursor-pointer items-center gap-2"
+            onClick={() => navigate("/dashboard")}
+          >
             <CgGym className="h-4 w-4" />
             <span>Gym</span>
           </DropdownMenuItem>
