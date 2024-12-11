@@ -8,10 +8,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import FillLoading from "@/components/shared/fill-loading";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import TaskForm from "@/components/forms/task-form";
 
 // Icons
 import { AlertCircle, BadgePlus } from "lucide-react";
-import TaskForm from "@/components/forms/task-form";
+
+// Firebase
 import {
   addDoc,
   collection,
@@ -20,14 +24,15 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/firebase";
+
+// React
+import { useState } from "react";
+
 import { z } from "zod";
 import { taskSchema } from "@/lib/validation";
 import { useUserState } from "@/stores/user.store";
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { taskService } from "@/services/task.service";
-import FillLoading from "@/components/shared/fill-loading";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { iTask } from "@/types";
 import { toast } from "sonner";
 
@@ -116,6 +121,7 @@ function Dashboard() {
                         task={task}
                         onStartEditing={() => onStartEditing(task)}
                         onDelete={() => onDelete(task.id)}
+                        refetch={refetch}
                       />
                     ))}
 

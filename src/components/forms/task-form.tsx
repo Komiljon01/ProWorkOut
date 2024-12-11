@@ -39,8 +39,8 @@ function TaskForm({ title = "", handler, isEdit, onClose }: Props) {
 
     toast.promise(promise, {
       loading: "Loading...",
-      success: "Successfull",
-      error: "Something went wrong",
+      success: isEdit ? "Successfully updated!" : "Successfully added!",
+      error: "Something went wrong!",
     });
   };
 
